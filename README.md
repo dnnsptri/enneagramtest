@@ -1,61 +1,138 @@
 # Enneagram Test Application
 
-A comprehensive Dutch Enneagram personality test application that provides in-depth personality type analysis through an intuitive, user-friendly interface.
-
-## Project Description
-
-This project is a clone of the Enneagram personality test from eclecticenergies.com, implemented as a modern web application. The test includes 234 questions (26 per type) and follows the original scoring method, showing both primary type and tri-type results.
-
-## Project Structure
-
-This repository contains two versions of the application:
-
-1. **Main Application (React + Express)**: Located in the root directory, this version uses React for the frontend and Express for the backend. It's optimized for development and testing within Replit.
-
-2. **Optimized Next.js Deployment**: Located in the `optimized_deployment` directory, this version is a Next.js implementation ready for deployment to production environments. This version is much smaller in size and only includes the necessary dependencies.
+A modern web application for taking the Enneagram personality test, built with Next.js and Tailwind CSS.
 
 ## Features
 
-- Complete Enneagram test with 234 questions in Dutch
-- Calculation of primary type and tri-type (primary, secondary, tertiary)
-- Detailed descriptions for each Enneagram type
-- Email capture before downloading results (emails stored in emails.txt)
-- Responsive design for all device sizes
-- PDF generation for test results
+- Interactive Enneagram personality test with 234 questions
+- Real-time progress tracking
+- Detailed results with personality type descriptions
+- PDF result generation
+- Email result sharing
+- Responsive design for all devices
+- Modern UI with Tailwind CSS
 
-## Deployment Instructions
+## Local Development
 
-For deploying the application:
+### Prerequisites
 
-1. Use the files in the `optimized_deployment` directory for a small and efficient Next.js deployment
-2. Follow the instructions in `optimized_deployment/README.md`
+- Node.js 18+ 
+- npm or yarn
 
-The optimized version is significantly smaller:
-- Original project size: ~434MB
-- Optimized deployment: ~128KB
+### Installation
 
-## Technology Stack
-
-- TypeScript for type-safe development
-- React for interactive frontend
-- Express for backend API
-- Next.js for the optimized deployment
-- Tailwind CSS for styling
-- PDF generation with react-pdf/renderer
-- PostgreSQL database support (optional)
-
-## Getting Started
-
-To run the development version:
-
+1. Clone the repository:
 ```bash
-npm run dev
+git clone <your-repository-url>
+cd enneagram
 ```
 
-To use the optimized Next.js version:
-
+2. Install dependencies:
 ```bash
-cd optimized_deployment
 npm install
+```
+
+3. Create a `.env.local` file in the root directory:
+```bash
+# For email functionality (optional)
+SENDGRID_API_KEY=your_sendgrid_api_key_here
+```
+
+4. Start the development server:
+```bash
 npm run dev
 ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+## Deployment to Vercel
+
+### Option 1: Deploy via Vercel Dashboard
+
+1. Push your code to GitHub
+2. Go to [Vercel](https://vercel.com) and sign in
+3. Click "New Project"
+4. Import your GitHub repository
+5. Vercel will automatically detect it's a Next.js project
+6. Add environment variables if needed (SENDGRID_API_KEY)
+7. Click "Deploy"
+
+### Option 2: Deploy via Vercel CLI
+
+1. Install Vercel CLI:
+```bash
+npm i -g vercel
+```
+
+2. Login to Vercel:
+```bash
+vercel login
+```
+
+3. Deploy:
+```bash
+vercel
+```
+
+### Environment Variables
+
+For email functionality, add these environment variables in your Vercel project settings:
+
+- `SENDGRID_API_KEY` - Your SendGrid API key
+
+## Project Structure
+
+```
+├── pages/           # Next.js pages
+│   ├── api/        # API routes
+│   ├── _app.js     # App wrapper
+│   ├── index.js    # Home page
+│   ├── test.js     # Test page
+│   └── results.js  # Results page
+├── data/           # Application data
+│   └── questions.js # Test questions and types
+├── styles/         # CSS styles
+│   └── globals.css # Global styles
+├── public/         # Static assets
+├── next.config.js  # Next.js configuration
+├── tailwind.config.js # Tailwind CSS configuration
+└── package.json    # Dependencies and scripts
+```
+
+## API Endpoints
+
+- `GET /api/questions` - Get all test questions
+- `POST /api/results` - Submit test results
+- `POST /api/email` - Send results via email
+- `GET /api/types` - Get enneagram type information
+
+## Technologies Used
+
+- **Next.js** - React framework
+- **Tailwind CSS** - Utility-first CSS framework
+- **React Hook Form** - Form handling
+- **@react-pdf/renderer** - PDF generation
+- **SendGrid** - Email service
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Support
+
+For questions or issues, please open an issue on GitHub.
