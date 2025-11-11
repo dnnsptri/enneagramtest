@@ -28,7 +28,8 @@ export default function Results() {
       const response = await fetch(`/api/results?id=${resultId}`);
       
       if (!response.ok) {
-        throw new Error('Resultaat niet gevonden');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Resultaat niet gevonden');
       }
       
       const data = await response.json();
@@ -85,11 +86,19 @@ export default function Results() {
   
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-2">Er is een fout opgetreden</h1>
-          <p className="mb-4">{error === 'Resultaat niet gevonden' ? 'Je resultaat kon niet worden gevonden. Mogelijk is de test verlopen of is de server herstart.' : error}</p>
-          <Link href="/test" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors bg-blue-600 text-white px-4 py-2 hover:bg-blue-700">Test Opnieuw Maken</Link>
+      <div className="min-h-screen flex items-center justify-center p-6">
+        <div className="max-w-md text-center">
+          <h1 className="text-2xl font-bold mb-4 text-red-600">Er is een fout opgetreden</h1>
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-gray-700 mb-2">{error}</p>
+            <p className="text-sm text-gray-600">
+              Resultaten worden tijdelijk opgeslagen. Als de server herstart, verdwijnen ze. 
+              Voltooi de test opnieuw om nieuwe resultaten te genereren.
+            </p>
+          </div>
+          <Link href="/test" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors bg-blue-600 text-white px-6 py-3 hover:bg-blue-700">
+            Test Opnieuw Maken
+          </Link>
         </div>
       </div>
     );
