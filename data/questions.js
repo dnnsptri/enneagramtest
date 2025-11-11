@@ -233,6 +233,7 @@ export const questions = [
   { id: 241, text: "Ik zoek harmonie in mijn relaties en probeer conflicten te sussen.", type: 9 },
   { id: 242, text: "Ik waardeer eenvoudige, diepe en authentieke connecties met anderen.", type: 9 }
 ];
+
 export const enneagramTypes = [
   {
     id: 1,
@@ -406,3 +407,5 @@ export const enneagramTypes = [
     ]
   }
 ];
+
+export default { questions, enneagramTypes };
