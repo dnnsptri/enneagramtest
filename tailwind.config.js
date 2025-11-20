@@ -7,9 +7,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-urbanist)', 'sans-serif'],
+      },
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: "#F4EFE8",
+        foreground: "#383838",
         card: {
           DEFAULT: "var(--card)",
           foreground: "var(--card-foreground)",
@@ -19,8 +22,9 @@ module.exports = {
           foreground: "var(--popover-foreground)",
         },
         primary: {
-          DEFAULT: "var(--primary)",
-          foreground: "var(--primary-foreground)",
+          DEFAULT: "#467565",
+          foreground: "#FFFFFF",
+          hover: "#2F4F43",
         },
         secondary: {
           DEFAULT: "var(--secondary)",
@@ -28,7 +32,7 @@ module.exports = {
         },
         muted: {
           DEFAULT: "var(--muted)",
-          foreground: "var(--muted-foreground)",
+          foreground: "#383838",
         },
         accent: {
           DEFAULT: "var(--accent)",

@@ -88,15 +88,15 @@ export default function Results() {
     return (
       <div className="min-h-screen flex items-center justify-center p-6">
         <div className="max-w-md text-center">
-          <h1 className="text-2xl font-bold mb-4 text-red-600">Er is een fout opgetreden</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-[#B56362]">Er is een fout opgetreden</h1>
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-gray-700 mb-2">{error}</p>
+            <p className="text-[#B56362] mb-2">{error}</p>
             <p className="text-sm text-gray-600">
               Resultaten worden tijdelijk opgeslagen. Als de server herstart, verdwijnen ze. 
               Voltooi de test opnieuw om nieuwe resultaten te genereren.
             </p>
           </div>
-          <Link href="/test" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors bg-blue-600 text-white px-6 py-3 hover:bg-blue-700">
+          <Link href="/test" className="inline-flex items-center justify-center rounded-md text-base font-semibold transition-colors bg-primary text-primary-foreground px-6 py-3 hover:bg-[#2F4F43]">
             Test Opnieuw Maken
           </Link>
         </div>
@@ -127,36 +127,36 @@ export default function Results() {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-2xl mx-auto">
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm mb-8">
+        <div className="rounded-lg bg-[#F7F5F1] text-card-foreground shadow-sm mb-8">
           <div className="flex flex-col space-y-1.5 p-6">
             <div className="flex justify-between items-center">
               <div>
-                <h3 className="text-2xl font-semibold leading-none tracking-tight">Je Enneagram Resultaat</h3>
-                <p className="text-sm text-muted-foreground">
+                <h3 className="text-xl font-semibold leading-none tracking-tight font-sans">Je primaire Enneagram Resultaat</h3>
+                <p className="text-sm text-muted-foreground font-light">
                   Type {primaryType.id} - {primaryType.name}
                 </p>
               </div>
-              <button 
+              {/* <button 
                 onClick={() => setEmailDialogOpen(true)}
-                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2"
+                className="inline-flex items-center justify-center rounded-md text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-[#2F4F43] h-9 px-4 py-2 font-sans"
               >
                 <Download className="h-4 w-4 mr-2" />
                 Download PDF
-              </button>
+              </button> */}
             </div>
           </div>
           <div className="p-6 pt-0">
-            <h2 className="text-2xl font-bold mb-4">
+            <h2 className="text-2xl font-bold mb-4 font-sans">
               Type {primaryType.id} - {primaryType.name}
             </h2>
-            <p className="mb-6">{primaryType.description}</p>
+            <p className="mb-6 font-light">{primaryType.description}</p>
 
             <div className="w-full">
               <div className="border-b border-gray-200">
                 <button
-                  className="flex w-full items-center justify-between py-4 font-medium transition-all hover:underline"
+                  className="flex w-full items-center justify-between py-4 font-medium transition-all hover:underline font-sans"
                   id="accordion-trigger-1"
-                  aria-expanded="false"
+                  aria-expanded="true"
                   aria-controls="accordion-content-1"
                   onClick={(e) => {
                     const content = document.getElementById('accordion-content-1');
@@ -185,7 +185,7 @@ export default function Results() {
                   className="overflow-hidden transition-all"
                   id="accordion-content-1"
                   aria-labelledby="accordion-trigger-1"
-                  style={{ display: 'none' }}
+                  style={{ display: 'block' }}
                 >
                   <div className="pb-4 pt-0">
                     <ul className="list-disc pl-6">
@@ -200,7 +200,7 @@ export default function Results() {
                 <button
                   className="flex w-full items-center justify-between py-4 font-medium transition-all hover:underline"
                   id="accordion-trigger-2"
-                  aria-expanded="false"
+                  aria-expanded="true"
                   aria-controls="accordion-content-2"
                   onClick={(e) => {
                     const content = document.getElementById('accordion-content-2');
@@ -229,7 +229,7 @@ export default function Results() {
                   className="overflow-hidden transition-all"
                   id="accordion-content-2"
                   aria-labelledby="accordion-trigger-2"
-                  style={{ display: 'none' }}
+                  style={{ display: 'block' }}
                 >
                   <div className="pb-4 pt-0">
                     <ul className="list-disc pl-6">
@@ -244,47 +244,54 @@ export default function Results() {
           </div>
         </div>
 
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm mb-8">
+        <div className="rounded-lg bg-[#F7F5F1] text-card-foreground shadow-sm mb-8">
           <div className="flex flex-col space-y-1.5 p-6">
-            <h3 className="text-2xl font-semibold leading-none tracking-tight">Je Tri-Type</h3>
+            <h3 className="text-xl font-semibold leading-none tracking-tight">Je Tri-Type</h3>
             <p className="text-sm text-muted-foreground">
               Je drie meest dominante types in volgorde van invloed
             </p>
           </div>
           <div className="p-6 pt-0">
             <div className="grid md:grid-cols-3 gap-4">
-              <div className="border rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Primair</h3>
+              <div className="rounded-lg p-4">
+                <h3 className="text-xl font-semibold mb-2">Primair</h3>
                 <p className="text-xl mb-1">Type {primaryType.id} ({getPercent(primaryType.id - 1)}%)</p>
                 <p className="text-muted-foreground">{primaryType.name}</p>
               </div>
-              <div className="border rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Secundair</h3>
+              <div className="rounded-lg p-4">
+                <h3 className="text-xl font-semibold mb-2">Secundair</h3>
                 <p className="text-xl mb-1">Type {secondaryType.id} ({getPercent(secondaryType.id - 1)}%)</p>
                 <p className="text-muted-foreground">{secondaryType.name}</p>
               </div>
-              <div className="border rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Tertiair</h3>
+              <div className="rounded-lg p-4">
+                <h3 className="text-xl font-semibold mb-2">Tertiair</h3>
                 <p className="text-xl mb-1">Type {tertiaryType.id} ({getPercent(tertiaryType.id - 1)}%)</p>
                 <p className="text-muted-foreground">{tertiaryType.name}</p>
               </div>
             </div>
             <div className="mt-4">
               <p className="text-sm text-muted-foreground">
-                Je tri-type laat zien hoe de drie verschillende centra van intelligentie - hoofd, hart en lichaam - in jouw persoonlijkheid tot uiting komen. 
+                Je tri-type laat zien hoe de drie verschillende centra van intelligentie - hoofd, hart en buik - in jouw persoonlijkheid tot uiting komen.
+               </p> 
+               <p className="text-sm text-muted-foreground">
                 Dit geeft een completer beeld van je persoonlijkheid dan alleen je primaire type.
-              </p>
+               </p>
             </div>
           </div>
         </div>
         
         <div className="flex justify-between">
-          <Link href="/" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+          <Link href="/" className="inline-flex items-center justify-center rounded-md text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
             Terug naar Home
           </Link>
-          <Link href="/test" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+          <Link href="/test" className="inline-flex items-center justify-center rounded-md text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-[#2F4F43] h-10 px-4 py-2">
             Test Opnieuw Maken
           </Link>
+        </div>
+        <div className="flex justify-center mt-10">
+          <p className="text-xs text-[#383838] font-light font-sans">
+            ©{new Date().getFullYear()} Enneagramtest - <Link href="https://www.groeienontwikkelingscoach.nl/" target="_blank" rel="noopener noreferrer" className="underline">Groei- en Ontwikkelingscoach</Link>
+          </p>
         </div>
       </div>
 
@@ -310,12 +317,12 @@ export default function Results() {
                     placeholder="jouw@email.nl"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                    className="block w-full rounded-md border border-input bg-[#F7F5F1] px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 mt-1"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full mt-4 bg-blue-600 text-white rounded-lg py-2 font-medium hover:bg-blue-700 transition"
+                  className="w-full mt-4 bg-primary text-primary-foreground rounded-lg py-2 font-medium hover:bg-[#2F4F43] transition"
                   disabled={!email}
                 >
                   Versturen
@@ -333,7 +340,7 @@ export default function Results() {
                 <PDFDownloadLink
                   document={<ResultsPDF result={result} enneagramTypes={enneagramTypes} />}
                   fileName="enneagram-resultaat.pdf"
-                  className="flex-1 bg-blue-600 text-white rounded-lg py-2 font-medium flex items-center justify-center gap-2 hover:bg-blue-700 transition"
+                  className="flex-1 bg-primary text-primary-foreground rounded-lg py-2 font-medium flex items-center justify-center gap-2 hover:bg-[#2F4F43] transition"
                 >
                   {({ loading }) => (
                     <>
