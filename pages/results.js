@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Download } from 'lucide-react';
 import { enneagramTypes } from '../data/questions';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import ResultsPDF from '../ResultsPDF';
 
 export default function Results() {
   const router = useRouter();
@@ -12,9 +9,6 @@ export default function Results() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [emailDialogOpen, setEmailDialogOpen] = useState(false);
-  const [email, setEmail] = useState("");
-  const [showDownload, setShowDownload] = useState(false);
   
   useEffect(() => {
     // Alleen fetchen als er een ID beschikbaar is (client-side navigatie)
@@ -39,37 +33,6 @@ export default function Results() {
       console.error('Error fetching result:', error);
       setError(error.message);
       setLoading(false);
-    }
-  };
-
-  const handleEmailSubmit = async () => {
-    if (!email || !email.includes('@')) {
-      alert('Voer een geldig e-mailadres in');
-      return;
-    }
-
-    try {
-      const response = await fetch('/api/email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          email,
-          resultId: id
-        }),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Fout bij verzenden email');
-      }
-      
-      setShowDownload(true);
-      setEmailDialogOpen(false); // Automatisch sluiten na succes
-      alert('Bedankt! Je kunt nu het PDF-bestand downloaden.');
-    } catch (error) {
-      console.error('Email error:', error);
-      alert('Er is een fout opgetreden. Probeer het nogmaals.');
     }
   };
 
@@ -136,13 +99,6 @@ export default function Results() {
                   Type {primaryType.id} - {primaryType.name}
                 </p>
               </div>
-              {/* <button 
-                onClick={() => setEmailDialogOpen(true)}
-                className="inline-flex items-center justify-center rounded-md text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-[#2F4F43] h-9 px-4 py-2 font-sans"
-              >
-                <Download className="h-4 w-4 mr-2" />
-                Download PDF
-              </button> */}
             </div>
           </div>
           <div className="p-6 pt-0">
@@ -294,66 +250,6 @@ export default function Results() {
           </p>
         </div>
       </div>
-
-      {/* Email Dialog */}
-      {emailDialogOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-2xl max-w-md w-full p-6 relative">
-            <div className="mb-5">
-              <h2 className="text-xl font-semibold">Download je resultaten</h2>
-              <p className="text-sm text-muted-foreground">
-                Voer je e-mailadres in om het PDF-bestand te downloaden.
-              </p>
-            </div>
-            <div className="space-y-4">
-              <form onSubmit={handleEmailSubmit}>
-                <div>
-                  <label htmlFor="email" className="text-sm font-medium leading-none">
-                    E-mailadres
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    placeholder="jouw@email.nl"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full rounded-md border border-input bg-[#F7F5F1] px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 mt-1"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full mt-4 bg-primary text-primary-foreground rounded-lg py-2 font-medium hover:bg-[#2F4F43] transition"
-                  disabled={!email}
-                >
-                  Versturen
-                </button>
-              </form>
-            </div>
-            <div className="flex gap-4 mt-6">
-              <button
-                onClick={() => setEmailDialogOpen(false)}
-                className="flex-1 border border-gray-300 rounded-lg py-2 font-medium hover:bg-gray-100 transition"
-              >
-                Annuleren
-              </button>
-              {showDownload && result && (
-                <PDFDownloadLink
-                  document={<ResultsPDF result={result} enneagramTypes={enneagramTypes} />}
-                  fileName="enneagram-resultaat.pdf"
-                  className="flex-1 bg-primary text-primary-foreground rounded-lg py-2 font-medium flex items-center justify-center gap-2 hover:bg-[#2F4F43] transition"
-                >
-                  {({ loading }) => (
-                    <>
-                      <Download className="h-4 w-4 mr-1" />
-                      {loading ? 'PDF genereren...' : 'Download PDF'}
-                    </>
-                  )}
-                </PDFDownloadLink>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
