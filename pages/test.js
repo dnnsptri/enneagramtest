@@ -214,32 +214,40 @@ function calculateScores(answers, questions) {
 }
 
 function calculateTriTypes(scores) {
-  // Make a copy of the scores array
-  const scoresCopy = [...scores];
+  // Define the three centers according to Enneagram theory
+  const gutCenter = [8, 9, 1];   // Gut/Body center: doing
+  const heartCenter = [2, 3, 4]; // Heart center: feeling
+  const headCenter = [5, 6, 7];  // Head center: thinking
   
-  // Find primary type (highest score)
-  const primaryScore = Math.max(...scoresCopy);
-  // If all scores are 0, default to type 1, 2, 3 
-  if (primaryScore === 0) return { primaryType: 1, secondaryType: 2, tertiaryType: 3 };
+  // Find the highest scoring type in each center
+  const getHighestInCenter = (center) => {
+    let highestType = center[0];
+    let highestScore = scores[center[0] - 1];
+    
+    center.forEach(type => {
+      if (scores[type - 1] > highestScore) {
+        highestScore = scores[type - 1];
+        highestType = type;
+      }
+    });
+    
+    return { type: highestType, score: highestScore };
+  };
   
-  const primaryIndex = scoresCopy.indexOf(primaryScore);
-  const primaryType = primaryIndex + 1;
+  const gutResult = getHighestInCenter(gutCenter);
+  const heartResult = getHighestInCenter(heartCenter);
+  const headResult = getHighestInCenter(headCenter);
   
-  // Set the primary score to -1 so it's not chosen again
-  scoresCopy[primaryIndex] = -1;
+  // Sort the three types by score (highest to lowest)
+  const triTypeResults = [
+    gutResult,
+    heartResult,
+    headResult
+  ].sort((a, b) => b.score - a.score);
   
-  // Find secondary type (second highest score)
-  const secondaryScore = Math.max(...scoresCopy);
-  const secondaryIndex = scoresCopy.indexOf(secondaryScore);
-  const secondaryType = secondaryIndex + 1;
-  
-  // Set the secondary score to -1 so it's not chosen again
-  scoresCopy[secondaryIndex] = -1;
-  
-  // Find tertiary type (third highest score)
-  const tertiaryScore = Math.max(...scoresCopy);
-  const tertiaryIndex = scoresCopy.indexOf(tertiaryScore);
-  const tertiaryType = tertiaryIndex + 1;
-  
-  return { primaryType, secondaryType, tertiaryType };
+  return {
+    primaryType: triTypeResults[0].type,
+    secondaryType: triTypeResults[1].type,
+    tertiaryType: triTypeResults[2].type
+  };
 }

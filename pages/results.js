@@ -226,11 +226,11 @@ export default function Results() {
               </div>
             </div>
             <div className="mt-4">
-              <p className="text-sm text-muted-foreground">
-                Je tri-type laat zien hoe de drie verschillende centra van intelligentie - hoofd, hart en buik - in jouw persoonlijkheid tot uiting komen.
+              <p className="text-sm text-muted-foreground mb-2">
+                Je tri-type bestaat uit één type uit elk van de drie centra van intelligentie: Buik (8,9,1), Hart (2,3,4) en Hoofd (5,6,7).
                </p> 
                <p className="text-sm text-muted-foreground">
-                Dit geeft een completer beeld van je persoonlijkheid dan alleen je primaire type.
+                Deze combinatie laat zien hoe Doen, Voelen en Denken in jouw persoonlijkheid tot uiting komen en geeft een completer beeld dan alleen je primaire type.
                </p>
             </div>
           </div>
