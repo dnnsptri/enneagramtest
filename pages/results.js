@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { Download } from 'lucide-react';
 import { enneagramTypes } from '../data/questions';
 
 export default function Results() {
@@ -34,6 +35,69 @@ export default function Results() {
       setError(error.message);
       setLoading(false);
     }
+  };
+
+  const downloadResults = () => {
+    if (!result) return;
+    
+    const primaryType = enneagramTypes.find(t => t.id === result.primaryType);
+    const secondaryType = enneagramTypes.find(t => t.id === result.secondaryType);
+    const tertiaryType = enneagramTypes.find(t => t.id === result.tertiaryType);
+    
+    const total = result.scores.reduce((sum, s) => sum + s, 0) || 1;
+    const getPercent = (idx) => Math.round(((result.scores[idx] || 0) / total) * 100);
+    
+    const content = `
+ENNEAGRAM PERSOONLIJKHEIDSTEST - RESULTATEN
+============================================
+
+JE PRIMAIRE ENNEAGRAM TYPE
+Type ${primaryType.id} - ${primaryType.name}
+
+${primaryType.description}
+
+STERKE PUNTEN:
+${primaryType.strengths.map(s => `- ${s}`).join('\n')}
+
+UITDAGINGEN:
+${primaryType.weaknesses.map(w => `- ${w}`).join('\n')}
+
+
+JE TRI-TYPE
+============================================
+Je tri-type bestaat uit één type uit elk van de drie centra van intelligentie:
+Buik (8,9,1), Hart (2,3,4) en Hoofd (5,6,7).
+
+Deze combinatie laat zien hoe Doen, Voelen en Denken in jouw persoonlijkheid 
+tot uiting komen en geeft een completer beeld dan alleen je primaire type.
+
+Primair: Type ${primaryType.id} (${getPercent(primaryType.id - 1)}%) - ${primaryType.name}
+Secundair: Type ${secondaryType.id} (${getPercent(secondaryType.id - 1)}%) - ${secondaryType.name}
+Tertiair: Type ${tertiaryType.id} (${getPercent(tertiaryType.id - 1)}%) - ${tertiaryType.name}
+
+
+ALLE SCORES
+============================================
+${enneagramTypes.map((type, idx) => 
+  `Type ${type.id} - ${type.name}: ${getPercent(idx)}%`
+).join('\n')}
+
+
+---
+Gegenereerd op: ${new Date().toLocaleDateString('nl-NL')}
+Bron: Enneagramtest - Groei-en ontwikkelingscoach
+https://www.groeienontwikkelingscoach.nl/
+`;
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `enneagram-resultaat-type-${primaryType.id}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   if (loading) {
@@ -99,6 +163,13 @@ export default function Results() {
                   Type {primaryType.id} - {primaryType.name}
                 </p>
               </div>
+              <button
+                onClick={downloadResults}
+                className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-base font-semibold text-primary-foreground shadow-sm hover:bg-[#2F4F43] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-colors font-sans"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Download resultaat
+              </button>
             </div>
           </div>
           <div className="p-6 pt-0">
@@ -238,10 +309,10 @@ export default function Results() {
         
         <div className="flex justify-between">
           <Link href="/" className="inline-flex items-center justify-center rounded-md text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-[#F7F5F1] hover:bg-[#EDE9E1] h-10 px-4 py-2">
-            Terug naar Home
+            Startpagina
           </Link>
           <Link href="/test" className="inline-flex items-center justify-center rounded-md text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-[#2F4F43] h-10 px-4 py-2">
-            Test Opnieuw Maken
+            Test opnieuw maken
           </Link>
         </div>
         <div className="flex justify-center mt-10">
