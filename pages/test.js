@@ -40,25 +40,42 @@ export default function Test() {
     try {
       const { primaryType, secondaryType, tertiaryType } = calculateTriTypes(scores);
       
-      const response = await fetch('/api/results', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          scores,
-          primaryType,
-          secondaryType,
-          tertiaryType,
-          timestamp: new Date().toISOString()
-        }),
-      });
+      const resultData = {
+        scores,
+        primaryType,
+        secondaryType,
+        tertiaryType,
+        timestamp: new Date().toISOString()
+      };
       
-      const data = await response.json();
-      router.push(`/results?id=${data.id}`);
+      // Store in localStorage for persistence
+      const resultId = Date.now().toString();
+      localStorage.setItem(`enneagram-result-${resultId}`, JSON.stringify(resultData));
+      
+      // Also try to save to server
+      try {
+        const response = await fetch('/api/results', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(resultData),
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          router.push(`/results?id=${data.id}`);
+          return;
+        }
+      } catch (serverError) {
+        console.log('Server storage failed, using localStorage only');
+      }
+      
+      // If server fails, use localStorage ID
+      router.push(`/results?id=${resultId}`);
     } catch (error) {
       console.error('Error submitting results:', error);
-      // Handle error
+      alert('Er is een fout opgetreden bij het opslaan van de resultaten.');
     }
   }
 

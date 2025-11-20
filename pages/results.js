@@ -20,16 +20,27 @@ export default function Results() {
 
   const fetchResult = async (resultId) => {
     try {
+      // First try to get from server
       const response = await fetch(`/api/results?id=${resultId}`);
       
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Resultaat niet gevonden');
+      if (response.ok) {
+        const data = await response.json();
+        setResult(data);
+        setLoading(false);
+        return;
       }
       
-      const data = await response.json();
-      setResult(data);
-      setLoading(false);
+      // If server fails, try localStorage
+      const localData = localStorage.getItem(`enneagram-result-${resultId}`);
+      if (localData) {
+        const data = JSON.parse(localData);
+        setResult({ id: resultId, ...data });
+        setLoading(false);
+        return;
+      }
+      
+      // If both fail, show error
+      throw new Error('Resultaat niet gevonden');
     } catch (error) {
       console.error('Error fetching result:', error);
       setError(error.message);
@@ -116,15 +127,15 @@ https://www.groeienontwikkelingscoach.nl/
       <div className="min-h-screen flex items-center justify-center p-6">
         <div className="max-w-md text-center">
           <h1 className="text-3xl md:text-4xl font-bold mb-4 text-[#B56362]">Er is een fout opgetreden</h1>
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-[#B56362] mb-2">{error}</p>
-            <p className="text-sm text-gray-600">
-              Resultaten worden tijdelijk opgeslagen. Als de server herstart, verdwijnen ze. 
+          <div className="mb-6 p-4 bg-[#FEF2F2] border border-[#FCA5A5] rounded-lg">
+            <p className="text-[#B56362] mb-2 font-semibold">Resultaat niet gevonden</p>
+            <p className="text-sm text-[#B56362] font-light">
+              Je testresultaten konden niet worden geladen. Dit kan gebeuren als je browsercache is gewist. 
               Voltooi de test opnieuw om nieuwe resultaten te genereren.
             </p>
           </div>
-          <Link href="/test" className="inline-flex items-center justify-center rounded-md text-base font-semibold transition-colors bg-primary text-primary-foreground px-6 py-3 hover:bg-[#2F4F43]">
-            Test Opnieuw Maken
+          <Link href="/test" className="inline-flex items-center justify-center rounded-lg text-base font-semibold transition-colors bg-primary text-primary-foreground px-6 py-3 hover:bg-[#2F4F43] font-sans shadow-sm">
+            Test opnieuw maken
           </Link>
         </div>
       </div>
@@ -158,7 +169,7 @@ https://www.groeienontwikkelingscoach.nl/
           <div className="flex flex-col space-y-1.5 p-6">
             <div className="flex justify-between items-center">
               <div>
-                <h3 className="text-xl font-semibold leading-none tracking-tight font-sans">Je primaire Enneagram Resultaat</h3>
+                <h3 className="text-xl font-semibold leading-none tracking-tight font-sans">Je primaire Enneagram type</h3>
                 <p className="text-sm text-muted-foreground font-light">
                   Type {primaryType.id} - {primaryType.name}
                 </p>
